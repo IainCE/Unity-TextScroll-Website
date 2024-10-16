@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED Display</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+        }
+        #led-text {
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 48px;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 80%;
+            border: 3px solid #0f0;
+            padding: 10px;
+        }
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .scrolling {
+            display: inline-block;
+            animation: scroll 10s linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <div id="led-text"><span id="message" class="scrolling">Welcome!</span></div>
+    <audio id="sound" src=""></audio>
+
+    <script>
+        // Function to update the scrolling text and play sound
+        function updateDisplay(message, soundURL) {
+            const messageElement = document.getElementById('message');
+            const soundElement = document.getElementById('sound');
+            
+            messageElement.innerHTML = message;  // Update the text
+            soundElement.src = soundURL;  // Update sound URL
+            soundElement.play();  // Play the sound
+
+            // Restart animation
+            messageElement.style.animation = 'none';
+            setTimeout(() => {
+                messageElement.style.animation = '';
+            }, 10);  // Minimal timeout to trigger restart
+        }
+
+        // Example HTTP request from Unity or server
+        async function getUnityData() {
+            try {
+                const response = await fetch('https://your-unity-api-endpoint.com/data');
+                const data = await response.json();
+                updateDisplay(data.message, data.soundURL);
+            } catch (error) {
+                console.error('Error fetching data from Unity:', error);
+            }
+        }
+
+        // Polling Unity server every 5 seconds (adjust as necessary)
+        setInterval(getUnityData, 5000);
+    </script>
+</body>
+</html>
