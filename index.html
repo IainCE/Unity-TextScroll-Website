@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LED Display</title>
+    <title>LED Train Display</title>
     <style>
         body {
             display: flex;
@@ -11,16 +11,19 @@
             align-items: center;
             height: 100vh;
             background-color: #000;
+            margin: 0;
         }
         #led-text {
-            color: #0f0;
-            font-family: 'Courier New', Courier, monospace;
+            color: #ff9900;
+            font-family: 'DotMatrix', sans-serif; /* Custom Dot Matrix Font */
             font-size: 48px;
             white-space: nowrap;
             overflow: hidden;
-            width: 80%;
-            border: 3px solid #0f0;
-            padding: 10px;
+            width: 90%;
+            border: 2px solid #fff;
+            padding: 20px;
+            background-color: #000; /* Black background */
+            box-shadow: 0px 0px 15px #000; /* Optional glow effect */
         }
         @keyframes scroll {
             0% { transform: translateX(100%); }
@@ -29,21 +32,28 @@
         .scrolling {
             display: inline-block;
             animation: scroll 10s linear infinite;
+            padding-left: 100%
+        }
+
+        /* Simulating the dot matrix LED font */
+        @font-face {
+            font-family: 'DotMatrix';
+            src: url('https://fonts.cdnfonts.com/s/17398/Digital7-regular.woff') format('woff'); /* Example of digital/dot matrix font */
         }
     </style>
 </head>
 <body>
-    <div id="led-text"><span id="message" class="scrolling">Welcome!</span></div>
+    <div id="led-text"><span id="message" class="scrolling">This is Central Station. The Next Stop is-</span></div>
     <audio id="sound" src=""></audio>
 
     <script>
         // Function to update the scrolling text and play sound
-        function updateDisplay(message, soundURL) {
+        function updateDisplay(message, soundMessage) {
             const messageElement = document.getElementById('message');
             const soundElement = document.getElementById('sound');
             
             messageElement.innerHTML = message;  // Update the text
-            soundElement.src = soundURL;  // Update sound URL
+            soundElement.src = soundMessage;  // Update sound URL
             soundElement.play();  // Play the sound
 
             // Restart animation
